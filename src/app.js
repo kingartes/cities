@@ -1,22 +1,15 @@
-import { connect, Provider } from 'react-redux'
-import { createStore } from 'redux'
-import React, {Component} from 'react'
+import {  Provider } from 'react-redux'
+import React from 'react'
+import configureStore  from './store/configureStore'
 import { render } from 'react-dom';
-const store = createStore(() => {});
+import Root from './components/root'
 
-class App extends React.Component {
-    render() {
-        return (
-            <h1>Hello, World!</h1>
-        )
-    }
-}
-const Root = connect()(App)
+const store = configureStore()
 
 render(
     <Provider store={store}>
         <Root/>
-        </Provider>,
-        document.getElementById('root')
+    </Provider>,
+    document.getElementById('root')
 )
 

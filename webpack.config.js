@@ -19,7 +19,8 @@ const webpackOption = [{
             template: "./src/index.html",
             filename: "./index.html"
         })
-    ]
+    ],
+    devtool: 'source-map'
 }];
 let babelLoader = {
     test: /\.(js|jsx)$/,

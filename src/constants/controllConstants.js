@@ -1,0 +1,2 @@
+export const CITY_INPUT_CHANGE_ACTION = 'CITY_INPUT_CHANGE_ACTION'
+export const CITY_INTPUT_VALUE_STATE_PATH = 'form.cityInputValue'
