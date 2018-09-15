@@ -3,13 +3,27 @@ import {map} from 'lodash'
 import CityListEntry from './cityListEntry'
 
 class CitiesList extends Component {
+    onEntrySelected (city, selectedPostCode) {
+        const {onSelected, onCityValueChanged } = this.props
+
+        if (city.postCode === selectedPostCode) {
+            onSelected(null)
+            return
+        }
+
+        onSelected(city.postCode)
+        onCityValueChanged(city.postCode)
+    }
+
     render () {
         const {
             cities,
-            cityInputValue,
+            selectedPostCode,
             onCityValueChanged,
+            cityInputValue,
             addCityToList
         } = this.props
+
         return (
             <div>
                 <input value={cityInputValue} onChange={({target: {value}})=> {
@@ -20,7 +34,12 @@ class CitiesList extends Component {
                 }}>go</button>
                 <ul>
                     {map(cities, (city) => {
-                        return <CityListEntry city={city}/>
+                        console.log(city, selectedPostCode)
+                        return <CityListEntry
+                            onSelected={() => this.onEntrySelected.call(this, city, selectedPostCode)}
+                            isSelected={selectedPostCode === city.postCode}
+                            city={city}
+                        />
                     })}
                 </ul>
             </div>

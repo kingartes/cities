@@ -12,11 +12,27 @@ class CityListEntry extends Component {
         return `${latitude}${longitude}`
     }
 
+    getStyle () {
+        const { isSelected } = this.props
+        console.log(isSelected)
+        return isSelected
+            ? {backgroundColor: "#aaa", width: "200px" }
+            : {}
+    }
+
     render () {
-        const { city } = this.props
+        const { city, onSelected } = this.props
         const displayName = this.formatEntryToDisplay(city)
         const key = this.generateKey(city)
-        return <li key={key}>{displayName}</li>
+        const style = this.getStyle()
+
+        return <li
+            key={key}
+            onClick={() => onSelected(city.postCode)}
+            style={style}
+        >
+            {displayName}
+        </li>
     }
 }
 
