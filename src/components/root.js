@@ -20,10 +20,11 @@ class App extends Component {
                 return dispatch(changeCityInputAction(value))
             },
             addCityToList: (value) => {
-                const handler = (value) => {
-                    dispatch(onSitiesLoadAction(value))
-                }
-                dispatch(loadCitiesAction(value, handler))
+                const handlerChain = [
+                    (value) => dispatch(onSitiesLoadAction(value)),
+                    () => dispatch(changeCityInputAction(""))
+                ]
+                dispatch(loadCitiesAction(value, handlerChain))
             }
         }
     }
