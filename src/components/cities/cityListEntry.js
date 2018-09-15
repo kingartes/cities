@@ -14,7 +14,6 @@ class CityListEntry extends Component {
 
     getStyle () {
         const { isSelected } = this.props
-        console.log(isSelected)
         return isSelected
             ? {backgroundColor: "#aaa", width: "200px" }
             : {}

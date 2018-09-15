@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {loadCitiesAction, onSitiesLoadAction, setSelectedPostCodeAction} from "../actions/citiesActions";
+import {loadCitiesAction, onCitiesLoadAction, setSelectedPostCodeAction, replaceSelectedPostCodesAction} from "../actions/citiesActions";
 import {getCitiesSelector, isPostCodeAlreadyExistSelector, getSelectedPostCodeSelector} from "../selectors/cities";
 import CitiesList from './cities/citiesList';
 import {changeCityInputAction} from "../actions/formActions";
@@ -8,7 +8,6 @@ import {getCityInputValue} from "../selectors/getCityInputValue";
 
 class App extends Component {
     static mapStateToProps (state, ownProps) {
-        console.log(state)
         return {
             cities: getCitiesSelector(state),
             cityInputValue: getCityInputValue(state),
@@ -28,9 +27,16 @@ class App extends Component {
                 return dispatch((innerDispatch, getState) => {
                     const state = getState()
                     const isExistPostCode = isPostCodeAlreadyExistSelector(state, value)
+                    const selectedPostCode = getSelectedPostCodeSelector(state)
                     if (!isExistPostCode) {
+                        const citiesUpdateHandler = selectedPostCode
+                            ? [
+                                (res) => innerDispatch(replaceSelectedPostCodesAction(res, selectedPostCode)),
+                                (res) => innerDispatch(setSelectedPostCodeAction(value))
+                            ]
+                            : [ (res) => innerDispatch(onCitiesLoadAction(res)) ]
                         const handlerChain = [
-                            (value) => innerDispatch(onSitiesLoadAction(value)),
+                            ...citiesUpdateHandler,
                             () => innerDispatch(changeCityInputAction(""))
                         ]
                         dispatch(loadCitiesAction(value, handlerChain))

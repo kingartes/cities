@@ -1,4 +1,5 @@
-import {ON_LOAD_CITIES_ACTIONS_TYPE, ADD_CITY_TO_LIST_ACTION} from '../../constants/citiesConstants'
+import {ON_LOAD_CITIES_ACTIONS_TYPE, REPLACE_SELECTED_POSTCODE} from '../../constants/citiesConstants'
+import { reject } from 'lodash'
 
 export const citiesReducer = (state = [], action) => {
     switch (action.type) {
@@ -9,12 +10,13 @@ export const citiesReducer = (state = [], action) => {
                 data
             ]
         }
-        case ADD_CITY_TO_LIST_ACTION: {
-            const {city} = action
+        case REPLACE_SELECTED_POSTCODE: {
+            const { data, postCode } = action
+            const newState = reject(state, {postCode})
 
             return [
-                ...state,
-                city
+                ...newState,
+                data
             ]
         }
     }

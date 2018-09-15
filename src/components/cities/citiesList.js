@@ -34,7 +34,6 @@ class CitiesList extends Component {
                 }}>go</button>
                 <ul>
                     {map(cities, (city) => {
-                        console.log(city, selectedPostCode)
                         return <CityListEntry
                             onSelected={() => this.onEntrySelected.call(this, city, selectedPostCode)}
                             isSelected={selectedPostCode === city.postCode}
