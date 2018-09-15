@@ -13,7 +13,6 @@ class CitiesList extends Component {
         return (
             <div>
                 <input value={cityInputValue} onChange={({target: {value}})=> {
-                    console.log(value)
                     onCityValueChanged(value)
                 }} />
                 <button onClick={() => {

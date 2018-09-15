@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import {loadCitiesAction, addCityToListAction} from "../actions/citiesActions";
+import {loadCitiesAction, onSitiesLoadAction} from "../actions/citiesActions";
 import {getCitiesSelector} from "../selectors/cities";
 import CitiesList from './cities/citiesList';
 import {changeCityInputAction} from "../actions/formActions";
 import {getCityInputValue} from "../selectors/getCityInputValue";
-import {convertCityInputToModel} from "../helpers/citiesHelper";
 
 class App extends Component {
     static mapStateToProps (state, ownProps) {
@@ -17,25 +16,16 @@ class App extends Component {
 
     static mapDispatchToProps (dispatch) {
         return {
-            loadCities () {
-                return dispatch(loadCitiesAction())
-            },
-            changeCityInputValue (value) {
+            changeCityInputValue: (value) => {
                 return dispatch(changeCityInputAction(value))
             },
-            addCityToList (value, str) {
-                const city = convertCityInputToModel(value)
-                if(!city){
-                    throw new Error('City format is incorrect')
+            addCityToList: (value) => {
+                const handler = (value) => {
+                    dispatch(onSitiesLoadAction(value))
                 }
-
-                return dispatch(addCityToListAction(city))
+                dispatch(loadCitiesAction(value, handler))
             }
         }
-    }
-
-    componentDidMount () {
-        this.props.loadCities()
     }
 
     render() {

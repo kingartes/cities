@@ -3,11 +3,10 @@ import {ON_LOAD_CITIES_ACTIONS_TYPE, ADD_CITY_TO_LIST_ACTION} from '../../consta
 export const citiesReducer = (state = [], action) => {
     switch (action.type) {
         case ON_LOAD_CITIES_ACTIONS_TYPE: {
-            const {cities: {places}} = action
-
+            const { data } = action
             return [
                 ...state,
-                ...places
+                data
             ]
         }
         case ADD_CITY_TO_LIST_ACTION: {

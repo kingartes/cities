@@ -1,10 +1,11 @@
 import { ON_LOAD_CITIES_ACTIONS_TYPE, ADD_CITY_TO_LIST_ACTION} from '../constants/citiesConstants'
 import {CITIES_API} from "../constants/apiConstants";
+import {convertToPostCodeModel} from "../helpers/citiesHelper";
 
-export function onSitiesLoadAction (cities) {
+export function onSitiesLoadAction (res) {
     return {
         type: ON_LOAD_CITIES_ACTIONS_TYPE,
-        cities
+        data: {...convertToPostCodeModel(res)}
     }
 }
 
@@ -15,11 +16,9 @@ export function addCityToListAction (city) {
     }
 }
 
-export function loadCitiesAction () {
+export function loadCitiesAction (zipCode, handler) {
     return (dispatch) =>
-        fetch(CITIES_API)
+        fetch(`${CITIES_API}/${zipCode}`)
             .then(res => res.json())
-            .then(cities => {
-                dispatch(onSitiesLoadAction(cities))
-            })
+            .then(postCodes => handler(postCodes))
 }

@@ -1,1 +1,1 @@
-export const CITIES_API = 'https://api.zippopotam.us/us/90210'
+export const CITIES_API = 'https://api.zippopotam.us/us'
