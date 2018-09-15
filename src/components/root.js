@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {loadCitiesAction, onSitiesLoadAction} from "../actions/citiesActions";
-import {getCitiesSelector} from "../selectors/cities";
+import {getCitiesSelector, isPostCodeAlreadyExistSelector} from "../selectors/cities";
 import CitiesList from './cities/citiesList';
 import {changeCityInputAction} from "../actions/formActions";
 import {getCityInputValue} from "../selectors/getCityInputValue";
@@ -20,11 +20,20 @@ class App extends Component {
                 return dispatch(changeCityInputAction(value))
             },
             addCityToList: (value) => {
-                const handlerChain = [
-                    (value) => dispatch(onSitiesLoadAction(value)),
-                    () => dispatch(changeCityInputAction(""))
-                ]
-                dispatch(loadCitiesAction(value, handlerChain))
+                return dispatch((innerDispatch, getState) => {
+                    const state = getState()
+                    const isExistPostCode = isPostCodeAlreadyExistSelector(state, value)
+                    if (!isExistPostCode) {
+                        const handlerChain = [
+                            (value) => innerDispatch(onSitiesLoadAction(value)),
+                            () => innerDispatch(changeCityInputAction(""))
+                        ]
+                        dispatch(loadCitiesAction(value, handlerChain))
+                    } else {
+                        innerDispatch(changeCityInputAction(""))
+                        throw new Error("PostCode already exists")
+                    }
+                })
             }
         }
     }

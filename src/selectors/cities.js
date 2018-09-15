@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect'
-import { get, reduce, map, concat } from 'lodash'
+import { get, reduce, map, concat, findIndex } from 'lodash'
 import { CITIES_LIST_STATE_PATH } from '../constants/citiesConstants'
 
 export const getCitiesSelector = createSelector(
@@ -11,4 +11,10 @@ export const getCitiesSelector = createSelector(
         })
         return concat(memo, mapCodes)
     }, [])
+)
+
+export const isPostCodeAlreadyExistSelector = createSelector(
+    getCitiesSelector,
+    (_, postCode) => postCode,
+    (postCodes, postCode)=> !!~findIndex(postCodes, {postCode}) // ~ bitwise not convert -1 to 0, !! convert to bool
 )
